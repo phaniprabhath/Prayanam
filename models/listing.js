@@ -11,6 +11,7 @@ const listingSchema=new Schema({
     },
     image:{
         type:String,
+        default:"https://unsplash.com/photos/a-living-room-with-a-couch-and-a-table-https://unsplash.com/photos/a-living-room-with-a-couch-and-a-table-4Q9aOJF-64Q9aOJF-6vI",
         set:(v)=>v===""?"https://unsplash.com/photos/a-living-room-with-a-couch-and-a-table-https://unsplash.com/photos/a-living-room-with-a-couch-and-a-table-4Q9aOJF-64Q9aOJF-6vI"
             :v,
     },
@@ -23,7 +24,7 @@ const listingSchema=new Schema({
     country:{
         type:String,
     }
-};
+});
 
 const Listing=mongoose.model("Listing",listingSchema);
-modules.export=Listing;
+module.exports=Listing;
