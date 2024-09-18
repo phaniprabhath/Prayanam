@@ -10,10 +10,12 @@ const listingSchema=new Schema({
         type:String,
     },
     image:{
-        type:String,
-        default:"https://unsplash.com/photos/a-living-room-with-a-couch-and-a-table-https://unsplash.com/photos/a-living-room-with-a-couch-and-a-table-4Q9aOJF-64Q9aOJF-6vI",
-        set:(v)=>v===""?"https://unsplash.com/photos/a-living-room-with-a-couch-and-a-table-https://unsplash.com/photos/a-living-room-with-a-couch-and-a-table-4Q9aOJF-64Q9aOJF-6vI"
-            :v,
+        // type:String,
+        filename:String,
+        url:String,
+        // default:"https://unsplash.com/photos/a-living-room-with-a-couch-and-a-table-https://unsplash.com/photos/a-living-room-with-a-couch-and-a-table-4Q9aOJF-64Q9aOJF-6vI",
+        // set:(v)=>v===""?"https://unsplash.com/photos/a-living-room-with-a-couch-and-a-table-https://unsplash.com/photos/a-living-room-with-a-couch-and-a-table-4Q9aOJF-64Q9aOJF-6vI"
+        //     :v,
     },
     price:{
         type:Number,
