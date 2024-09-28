@@ -3,4 +3,14 @@
 } */
 .navbar{
     height:5rem;
+    background-color: whitesmoke;
+}
+
+.fa-compass{
+    color:#fe424d;
+    font-size: 2rem;
+}
+
+.nav-link{
+    color:#222222 !important; /* " !important " is for overriding custom styling over bootstrap styling */
 }
