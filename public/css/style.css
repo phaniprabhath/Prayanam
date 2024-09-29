@@ -1,3 +1,12 @@
+body{
+    font-family: "Plus Jakarta Sans",sans-serif !important;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+.container{
+    flex: 1;
+}
 .navbar{
     height:5rem;
     background-color: whitesmoke;
@@ -42,4 +51,38 @@
     height: 8rem;
     flex-wrap: wrap;
     justify-content: center;
+}
+
+/* Cards */
+.card{
+    border:none !important;
+    margin-bottom: 2rem;
+}
+.card-img-top{
+    border-radius: 1rem !important;
+    width: 100% !important;
+    object-fit: cover !important; /* to remove card's custom styling & bring our own styling*/
+}
+.card-body{
+    padding: 0 !important;
+}
+.card-text p{
+    font-weight: 400 !important;
+}
+.listing-link{
+    text-decoration: none;
+}
+
+/* Card effect */
+.card-img-overlay{
+    opacity: 0;
+}
+.card-img-overlay:hover{
+    opacity: 0.2;
+    background-color:white;
+}
+/* 'Add new listing' page or 'new.ejs */
+.add-btn{
+    background-color: #fe424d !important;
+    border: none !important;
 }
