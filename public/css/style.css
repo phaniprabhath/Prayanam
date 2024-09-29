@@ -81,8 +81,27 @@ body{
     opacity: 0.2;
     background-color:white;
 }
+
 /* 'Add new listing' page or 'new.ejs */
 .add-btn{
     background-color: #fe424d !important;
     border: none !important;
+}
+
+/* Edit page */
+.edit-btn{
+    background-color: #fe424d !important;
+    border: none !important;
+}
+
+/* Show page */
+.show-img{
+    height: 35vh;
+}
+.btns{
+    display: flex;
+}
+.show-card{
+    padding-left: 0;
+    padding-right: 0;
 }
