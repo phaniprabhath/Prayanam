@@ -4,14 +4,14 @@
         <div class="col-8 offset-2">
             <br>
             <h3>Create a New listing</h3>
-            <form method="post" action="/listings">
+            <form method="post" action="/listings" >
                 <div class="mb-3"> 
                     <label for="title" class="form-label">Title</label>
-                    <input type="text" name="listing[title]" placeholder="Enter title" class="form-control">
+                    <input type="text" name="listing[title]" placeholder="Enter title" class="form-control" required>
                 </div>
                 <div class="mb-3">
                     <label for="description" class="form-label">Description</label>
-                    <textarea name="listing[description]" placeholder="enter description" class="form-control"></textarea>
+                    <textarea name="listing[description]" placeholder="enter description" class="form-control" required></textarea>
                 </div>
                 <div class="mb-3">
                     <label for="image" class="form-label">Image</label>
@@ -20,16 +20,16 @@
                 <div class="row">
                     <div class="mb-3 col-md-4">
                         <label for="price" class="form-label">Price</label>
-                        <input name="listing[price]" placeholder="enter price" type="number" class="form-control">
+                        <input name="listing[price]" placeholder="enter price" type="number" class="form-control" required>
                     </div>
                     <div class="mb-3 col-md-8">
                         <label for="country" class="form-label">Country</label>
-                        <input name="listing[country]" placeholder="enter country name" type="text" class="form-control">
+                        <input name="listing[country]" placeholder="enter country name" type="text" class="form-control" required>
                     </div>
                 </div>
                 <div class="mb-3">
                     <label for="location" class="form-label">Location</label>
-                    <input name="listing[location]" placeholder="enter location" type="text" class="form-control">
+                    <input name="listing[location]" placeholder="enter location" type="text" class="form-control" required>
                 </div>
                 <button class="btn btn-dark add-btn">Add</button>
             </form>
