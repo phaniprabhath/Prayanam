@@ -14,7 +14,7 @@
                 <div class="card-body">
                   <p class="card-text">
                     <b><%= listing.title %></b><br>
-                    &#8377; <%=listing.price.toLocaleString("en-In")%> per night <!-- .toLocaleString("en-In")  is for writing ',' in price acc. to India.-->
+                    &#8377; <%=listing.price?listing.price.toLocaleString("en-In"):"N/A"%> per night <!-- .toLocaleString("en-In")  is for writing ',' in price acc. to India.-->
                   </p>
                 </div>
             </div>
