@@ -34,6 +34,16 @@ app.get("/",(req,res)=>{
     res.send("Hi, I am root");
 });
 
+const validatelisting=(req,res,next)=>{
+    let {error}=listingSchema.validate(req.body); // schema.js
+    if(error){
+        let errMsg=error.details.map((el)=>el.message).join(",");
+        throw new ExpressError(400,errMsg);
+    }else{
+        next();
+    }
+};
+
 // Index route
 app.get("/listings",  wrapAsync(async (req,res)=>{ // wrapAsync helps to avoid try-catch everytime
     const allListings=await Listing.find({});
@@ -54,12 +64,8 @@ app.get("/listings/:id", wrapAsync(async (req,res)=>{
 // Create Route
 app.post(
     "/listings",
+    validatelisting, // passing 'validatelisting' as a middleware
     wrapAsync(async (req,res,next)=>{
-        let result=listingSchema.validate(req.body); // schema.js
-        console.log(result);
-        if(result.error){
-            throw new ExpressError(400,result.error);
-        }
         const newListing = new Listing(req.body.listing);
         await newListing.save();
         res.redirect("/listings");
@@ -73,10 +79,10 @@ app.get("/listings/:id/edit", wrapAsync( async (req,res)=>{
 }));
 
 //Update route
-app.put("/listings/:id", wrapAsync(async (req,res)=>{
-    if(!req.body.listing){  // if there is no listing
-        throw new ExpressError(400,"Send valid data for listing"); // 400 represents client error
-    }
+app.put(
+    "/listings/:id",
+    validatelisting,
+    wrapAsync(async (req,res)=>{
     let {id}=req.params;
     await Listing.findByIdAndUpdate(id,{...req.body.listing});
     // This is using JavaScript's spread syntax to expand the properties of req.body.listing into a new object.
