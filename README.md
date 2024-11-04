@@ -1,2 +1,2 @@
 # Prayanam
-This is a Full Stack Website similar to Airbnb . It can be called a Mini-Airbnb. 
+This is a Full Stack Booking Website similar to Airbnb.
