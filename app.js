@@ -35,7 +35,8 @@ app.get("/",(req,res)=>{
     res.send("Hi, I am root");
 });
 
-app.use("/listings",listings); // routes/listing.js
+// These two lines are for using Router object
+app.use("/listings",listings); 
 app.use("/listings/:id/reviews",reviews);
 
 // The below code is for throwing the error if the user searches none of the above routes.

@@ -1,7 +1,7 @@
 // restructuring reviews
 
 const express=require("express");
-const router=express.Router({mergeParams:true});
+const router=express.Router({mergeParams:true}); // mergeParams is needed for child routes
 // these are requirements of reviews
 const wrapAsync=require("../utils/wrapAsync.js");
 const ExpressError = require("../utils/ExpressError.js");
