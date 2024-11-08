@@ -13,6 +13,7 @@ const {listingSchema,reviewSchema}=require("./schema.js");
 const Review =require("./models/review.js");
 
 const listings= require("./routes/listing.js");
+const reviews=require("./routes/review.js");
 
 main()
     .then(()=>{
@@ -38,41 +39,9 @@ app.get("/",(req,res)=>{
 });
 
 
-const validateReview=(req,res,next)=>{
-    console.log(req.body); // Add this line
-    let {error}=reviewSchema.validate(req.body); // schema.js
-    if(error){
-        let errMsg=error.details.map((el)=>el.message).join(",");
-        throw new ExpressError(400,errMsg);
-    }else{
-        next();
-    }
-};
 
 app.use("/listings",listings); // routes/listing.js
-
-//Reviews
-//POST Review Route
-app.post("/listings/:id/reviews",validateReview,wrapAsync(async (req,res)=>{
-    let listing = await Listing.findById(req.params.id);
-    let newReview = new Review(req.body.review);
-
-    listing.reviews.push(newReview);
-
-    await newReview.save();
-    await listing.save();
-
-    console.log("new review saved");
-    res.send("new review saved");
-}));
-
-// Delete Review Route
-app.delete("/listings/:id/reviews/:reviewId",wrapAsync(async(req,res)=>{
-    let {id,reviewId}=req.params;
-    await Listing.findByIdAndUpdate(id,{$pull:{reviews:reviewId}});
-    await Review.findById(reviewId);
-    res.redirect(`/listings/${id}`);
-}))
+app.use("/listings/:id/reviews",reviews);
 
 // The below code is for throwing the error if the user searches none of the above routes.
 app.all("*",(req,res,next)=>{
