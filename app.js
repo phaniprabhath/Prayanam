@@ -12,6 +12,8 @@ const MONGO_URL="mongodb://127.0.0.1:27017/wanderlust";
 const {listingSchema,reviewSchema}=require("./schema.js");
 const Review =require("./models/review.js");
 
+const listings= require("./routes/listing.js");
+
 main()
     .then(()=>{
         console.log("Connected to DB");
@@ -35,16 +37,6 @@ app.get("/",(req,res)=>{
     res.send("Hi, I am root");
 });
 
-const validatelisting=(req,res,next)=>{
-    let {error}=listingSchema.validate(req.body); // schema.js
-    if(error){
-        let errMsg=error.details.map((el)=>el.message).join(",");
-        throw new ExpressError(400,errMsg);
-    }else{
-        next();
-    }
-};
-
 
 const validateReview=(req,res,next)=>{
     console.log(req.body); // Add this line
@@ -57,57 +49,7 @@ const validateReview=(req,res,next)=>{
     }
 };
 
-// Index route
-app.get("/listings",  wrapAsync(async (req,res)=>{ // wrapAsync helps to avoid try-catch everytime
-    const allListings=await Listing.find({});
-    res.render("listings/index.ejs",{allListings});
-}));
-
-// New route
-app.get("/listings/new",async(req,res)=>{
-    res.render("listings/new.ejs");
-}); // Write 'New route' before the 'Show route'
-
-//Show route
-app.get("/listings/:id", wrapAsync(async (req,res)=>{
-    let {id}=req.params;
-    const listing=await Listing.findById(id).populate("reviews");
-    res.render("listings/show.ejs",{listing});
-}));
-// Create Route
-app.post(
-    "/listings",
-    validatelisting, // passing 'validatelisting' as a middleware
-    wrapAsync(async (req,res,next)=>{
-        const newListing = new Listing(req.body.listing);
-        await newListing.save();
-        res.redirect("/listings");
-}));
-
-// Edit Route
-app.get("/listings/:id/edit", wrapAsync( async (req,res)=>{
-    let {id}=req.params;
-    const listing=await Listing.findById(id);
-    res.render("listings/edit.ejs",{listing});
-}));
-
-//Update route
-app.put(
-    "/listings/:id",
-    validatelisting,
-    wrapAsync(async (req,res)=>{
-    let {id}=req.params;
-    await Listing.findByIdAndUpdate(id,{...req.body.listing});
-    // This is using JavaScript's spread syntax to expand the properties of req.body.listing into a new object.
-    // The spread operator (...) takes all key-value pairs in req.body.listing and inserts them into the update query.
-    res.redirect(`/listings/${id}`);
-}));
-// Delete route
-app.delete("/listings/:id", wrapAsync(async(req,res)=>{
-    let {id}=req.params;
-    await Listing.findByIdAndDelete(id);
-    res.redirect("/listings");
-}));
+app.use("/listings",listings); // routes/listing.js
 
 //Reviews
 //POST Review Route
