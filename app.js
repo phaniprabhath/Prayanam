@@ -1,19 +1,16 @@
 const express=require("express");
 const app=express();
 const mongoose=require("mongoose");
-const Listing=require("./models/listing.js");
 const path = require("path");  // its necessary for ejs
 const methodOverride=require("method-override");
 const ejsMate=require("ejs-mate");
 // ejs-mate helps in creating templates or layouts. It's a 'npm' package.
-const wrapAsync=require("./utils/wrapAsync.js");
 const ExpressError = require("./utils/ExpressError.js");
-const MONGO_URL="mongodb://127.0.0.1:27017/wanderlust";
-const {listingSchema,reviewSchema}=require("./schema.js");
-const Review =require("./models/review.js");
 
 const listings= require("./routes/listing.js");
 const reviews=require("./routes/review.js");
+
+const MONGO_URL="mongodb://127.0.0.1:27017/wanderlust";
 
 main()
     .then(()=>{
@@ -37,8 +34,6 @@ app.use(express.static(path.join(__dirname,"/public")));
 app.get("/",(req,res)=>{                   
     res.send("Hi, I am root");
 });
-
-
 
 app.use("/listings",listings); // routes/listing.js
 app.use("/listings/:id/reviews",reviews);

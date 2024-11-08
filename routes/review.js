@@ -1,15 +1,15 @@
 // restructuring reviews
 
 const express=require("express");
-const router=express.Router();
+const router=express.Router({mergeParams:true});
 // these are requirements of reviews
 const wrapAsync=require("../utils/wrapAsync.js");
 const ExpressError = require("../utils/ExpressError.js");
 const Review =require("../models/review.js");
-const {listingSchema,reviewSchema}=require("../schema.js");
+const {reviewSchema}=require("../schema.js");
+const Listing=require("../models/listing.js");
 
 const validateReview=(req,res,next)=>{
-    console.log(req.body); // Add this line
     let {error}=reviewSchema.validate(req.body); // schema.js
     if(error){
         let errMsg=error.details.map((el)=>el.message).join(",");
