@@ -7,7 +7,7 @@ const wrapAsync=require("../utils/wrapAsync.js");
 const {listingSchema}=require("../schema.js");
 const ExpressError = require("../utils/ExpressError.js");
 const Listing=require("../models/listing.js");
-
+const {isLoggedIn} = require("../middleware.js");
 
 const validatelisting=(req,res,next)=>{
     let {error}=listingSchema.validate(req.body); // schema.js
@@ -26,7 +26,7 @@ router.get("/",  wrapAsync(async (req,res)=>{ // wrapAsync helps to avoid try-ca
 }));
 
 // New route
-router.get("/new",async(req,res)=>{
+router.get("/new",isLoggedIn,(req,res)=>{ // adding middleware 'isLoggedIn'
     res.render("listings/new.ejs");
 }); // Write 'New route' before the 'Show route'
 
@@ -44,6 +44,7 @@ router.get("/:id", wrapAsync(async (req,res)=>{
 // Create Route
 router.post(
     "/",
+    isLoggedIn,
     validatelisting, // passing 'validatelisting' as a middleware
     wrapAsync(async (req,res,next)=>{
         const newListing = new Listing(req.body.listing);
@@ -53,7 +54,7 @@ router.post(
 }));
 
 // Edit Route
-router.get("/:id/edit", wrapAsync( async (req,res)=>{
+router.get("/:id/edit", isLoggedIn,wrapAsync( async (req,res)=>{
     let {id}=req.params;
     const listing=await Listing.findById(id);
     if(!listing){
@@ -66,6 +67,7 @@ router.get("/:id/edit", wrapAsync( async (req,res)=>{
 //Update route
 router.put(
     "/:id",
+    isLoggedIn,
     validatelisting,
     wrapAsync(async (req,res)=>{
     let {id}=req.params;
@@ -76,7 +78,7 @@ router.put(
     res.redirect(`/listings/${id}`);
 }));
 // Delete route
-router.delete("/:id", wrapAsync(async(req,res)=>{
+router.delete("/:id", isLoggedIn,wrapAsync(async(req,res)=>{
     let {id}=req.params;
     await Listing.findByIdAndDelete(id);
     req.flash("success","Listing Deleted!");
