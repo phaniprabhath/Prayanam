@@ -33,6 +33,7 @@ router
     .put(
         isLoggedIn,
         isOwner,
+        upload.single('listing[image]'), // multer processes & brings data into req.file
         validatelisting,
         wrapAsync(listingController.updateListing)
     )

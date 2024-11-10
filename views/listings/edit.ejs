@@ -4,7 +4,10 @@
         <div class="col-8 offset-2">
             <br>
             <h3>Edit your listing</h3>
-            <form method="post" action="/listings/<%=listing._id%>?_method=PUT">
+            <form 
+                method="post" 
+                action="/listings/<%=listing._id%>?_method=PUT"
+                enctype="multipart/form-data">
                 <div class="mb-3">
                     <label for="title" class="form-label">Title</label>
                     <input name="listing[title]" value="<%= listing.title %>" type="text" class="form-control" required>
@@ -14,8 +17,8 @@
                     <textarea name="listing[description]" class="form-control" required><%= listing.description %></textarea>
                 </div>
                 <div class="mb-3">
-                    <label for="image" class="form-label">image</label>
-                    <input name="listing[image]" value="<%= listing.image %>" type="text" class="form-control" required>
+                    <label for="image" class="form-label">Upload new image</label>
+                    <input name="listing[image]" type="file" class="form-control" >
                 </div>
                 <div class="row">
                     <div class="mb-3 col-md-4">
