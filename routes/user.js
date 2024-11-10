@@ -18,7 +18,7 @@ router.post("/signup",wrapAsync(async(req,res)=>{
             if(err){
                 return next(err);
             }
-            req.flash("success","Welcome");
+            req.flash("success",`Welcome  ${username}`);
             res.redirect("/listings");
         });
     } catch(e){
