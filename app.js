@@ -11,6 +11,7 @@ const ejsMate=require("ejs-mate");
 // ejs-mate helps in creating templates or layouts. It's a 'npm' package.
 const ExpressError = require("./utils/ExpressError.js");
 const session = require("express-session");
+const MongoStore=require('connect-mongo'); // needed for sessions in production stage
 const flash=require("connect-flash");
 const passport=require("passport");
 const LocalStrategy=require("passport-local");
@@ -20,7 +21,8 @@ const listingRouter= require("./routes/listing.js");
 const reviewRouter=require("./routes/review.js");
 const userRouter=require("./routes/user.js");
 
-const MONGO_URL="mongodb://127.0.0.1:27017/wanderlust";
+// const MONGO_URL="mongodb://127.0.0.1:27017/wanderlust";
+const dbUrl=process.env.ATLASDB_URL;
 
 main()
     .then(()=>{
@@ -31,7 +33,7 @@ main()
     });
 
 async function main(){
-    await mongoose.connect(MONGO_URL);
+    await mongoose.connect(dbUrl);
 };
 
 app.set("view engine","ejs");
@@ -41,7 +43,18 @@ app.use(methodOverride("_method"));
 app.engine('ejs',ejsMate); // for ejs-mate
 app.use(express.static(path.join(__dirname,"/public")));
 
+const store=MongoStore.create({
+    mongoUrl:dbUrl,
+    crypto:{
+        secret:"mysupersecretcode"
+    },
+    touchAfter:24*3600
+});
+store.on("error",()=>{
+    console.log("ERROR in MONGO SESSION STORE",err);
+});
 const sessionOptions={
+    store:store,
     secret:"mysupersecretcode",
     resave:false,
     saveUninitialized: true,
