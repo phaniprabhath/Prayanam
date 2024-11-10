@@ -4,52 +4,29 @@ const User=require("../models/user");
 const wrapAsync=require("../utils/wrapAsync");
 const passport=require("passport");
 const {saveRedirectUrl}=require("../middleware");
+const userController= require("../controllers/users");
 
-router.get("/signup",(req,res)=>{
-    res.render("users/signup.ejs");
-});
+router.get("/signup",
+    userController.renderSignUpForm
+);
 
-router.post("/signup",wrapAsync(async(req,res)=>{
-    try{
-        let {username,email,password}=req.body;
-        const newUser =new User({email,username});
-        const registeredUser=await User.register(newUser,password); // important async method to register a user
-        req.login(registeredUser,(err)=>{
-            if(err){
-                return next(err);
-            }
-            req.flash("success",`Welcome  ${username}`);
-            res.redirect("/listings");
-        });
-    } catch(e){
-        req.flash("error",e.message);
-        res.redirect("/signup");
-    }
-}));
+router.post("/signup",
+    wrapAsync(userController.signup)
+);
 
-router.get("/login",(req,res)=>{
-    res.render("users/login.ejs");
-})
+router.get("/login",
+    userController.renderLoginForm
+);
 
 router.post("/login",saveRedirectUrl,passport.authenticate("local",{
     failureRedirect:"/login",
     failureFlash:true,
     }),
-    async(req,res)=>{
-        req.flash("success","Welcome back ");
-        let redirectUrl=res.locals.redirectUrl || "/listings"; // This is for making user login to his desired page rather than '/listings' always
-        res.redirect(redirectUrl);
-    }
+    userController.login
 );
 
-router.get("/logout",(req,res,next)=>{
-    req.logout((err)=>{ // an error parameter is written inside callback,err will be empty if there is no error while logging out 
-        if(err){
-            next(err);
-        }
-        req.flash("success","You are logged out");
-        res.redirect("/listings");
-    })
-})
+router.get("/logout",
+    userController.logout
+);
 
 module.exports=router;
