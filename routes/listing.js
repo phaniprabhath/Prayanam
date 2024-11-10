@@ -4,20 +4,8 @@ const express=require("express");
 const router=express.Router();
 // these are requirements related to listing
 const wrapAsync=require("../utils/wrapAsync.js");
-const {listingSchema}=require("../schema.js");
-const ExpressError = require("../utils/ExpressError.js");
 const Listing=require("../models/listing.js");
-const {isLoggedIn} = require("../middleware.js");
-
-const validatelisting=(req,res,next)=>{
-    let {error}=listingSchema.validate(req.body); // schema.js
-    if(error){
-        let errMsg=error.details.map((el)=>el.message).join(",");
-        throw new ExpressError(400,errMsg);
-    }else{
-        next();
-    }
-};
+const {isLoggedIn,isOwner,validatelisting} = require("../middleware.js");
 
 // Index route
 router.get("/",  wrapAsync(async (req,res)=>{ // wrapAsync helps to avoid try-catch everytime
@@ -55,7 +43,10 @@ router.post(
 }));
 
 // Edit Route
-router.get("/:id/edit", isLoggedIn,wrapAsync( async (req,res)=>{
+router.get("/:id/edit",
+    isLoggedIn,
+    isOwner,
+    wrapAsync( async (req,res)=>{
     let {id}=req.params;
     const listing=await Listing.findById(id);
     if(!listing){
@@ -69,17 +60,19 @@ router.get("/:id/edit", isLoggedIn,wrapAsync( async (req,res)=>{
 router.put(
     "/:id",
     isLoggedIn,
+    isOwner,
     validatelisting,
     wrapAsync(async (req,res)=>{
     let {id}=req.params;
-    await Listing.findByIdAndUpdate(id,{...req.body.listing});
-    // This is using JavaScript's spread syntax to expand the properties of req.body.listing into a new object.
-    // The spread operator (...) takes all key-value pairs in req.body.listing and inserts them into the update query.
+    await Listing.findByIdAndUpdate(id,{...req.body.listing});    // This is using JavaScript's spread syntax to expand the properties of req.body.listing into a new object.
     req.flash("success","Listing Updated!");
     res.redirect(`/listings/${id}`);
 }));
 // Delete route
-router.delete("/:id", isLoggedIn,wrapAsync(async(req,res)=>{
+router.delete("/:id",
+    isLoggedIn,
+    isOwner,
+    wrapAsync(async(req,res)=>{
     let {id}=req.params;
     await Listing.findByIdAndDelete(id);
     req.flash("success","Listing Deleted!");

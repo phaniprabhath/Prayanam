@@ -2,23 +2,10 @@
 
 const express=require("express");
 const router=express.Router({mergeParams:true}); // mergeParams is needed for child routes
-// these are requirements of reviews
 const wrapAsync=require("../utils/wrapAsync.js");
-const ExpressError = require("../utils/ExpressError.js");
 const Review =require("../models/review.js");
-const {reviewSchema}=require("../schema.js");
 const Listing=require("../models/listing.js");
-
-const validateReview=(req,res,next)=>{
-    let {error}=reviewSchema.validate(req.body); // schema.js
-    if(error){
-        let errMsg=error.details.map((el)=>el.message).join(",");
-        throw new ExpressError(400,errMsg);
-    }else{
-        next();
-    }
-};
-
+const {validateReview}=require("../middleware.js");
 
 //POST Review Route
 router.post("/",validateReview,wrapAsync(async (req,res)=>{
