@@ -7,8 +7,8 @@ const {isLoggedIn,isOwner,validatelisting} = require("../middleware.js");
 const listingController=require("../controllers/listings.js");
 
 const multer=require('multer')
-const upload=multer({dest:'uploads/'})
-
+const{storage}=require("../cloudConfig.js");
+const upload=multer({storage});
 
 router
     .route("/")
