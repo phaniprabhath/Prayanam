@@ -17,7 +17,7 @@ const listingSchema=new Schema({
             type:String,
             default:"https://images.unsplash.com/photo-1560448204-e02f11c3d0e2",
             set:function(v){
-                return v===""
+                return v === "" || v === null || v === undefined
                 ?"https://images.unsplash.com/photo-1560448204-e02f11c3d0e2"
                 :v;
             }
@@ -38,7 +38,11 @@ const listingSchema=new Schema({
             type:Schema.Types.ObjectId,
             ref:"Review"
         }
-    ]
+    ],
+    owner:{
+        type:Schema.Types.ObjectId,
+        ref:"User",
+    },
 });
 
 // A Mongoose Middleware used to delete reviews of a listing,if the listing gets deleted

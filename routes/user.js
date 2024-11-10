@@ -37,7 +37,7 @@ router.post("/login",saveRedirectUrl,passport.authenticate("local",{
     }),
     async(req,res)=>{
         req.flash("success","Welcome back ");
-        let redirectUrl=res.locals.redirectUrl || "/listings";
+        let redirectUrl=res.locals.redirectUrl || "/listings"; // This is for making user login to his desired page rather than '/listings' always
         res.redirect(redirectUrl);
     }
 );
