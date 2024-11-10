@@ -14,14 +14,12 @@ router
     .route("/")
     .get(wrapAsync(listingController.index)
     )
-    // .post(
-    //     isLoggedIn,
-    //     validatelisting, 
-    //     wrapAsync(listingController.createListing)
-    // ) 
-    .post(upload.single('listing[image]'),(req,res)=>{
-        res.send(req.file);
-    });
+    .post(
+        isLoggedIn,
+        upload.single('listing[image]'), // multer processes & brings data into req.file
+        validatelisting, 
+        wrapAsync(listingController.createListing)
+    );
 
 // New route
 router.get("/new",

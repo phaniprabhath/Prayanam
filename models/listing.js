@@ -11,17 +11,8 @@ const listingSchema=new Schema({
         type:String,
     },
     image:{
-        // type:String,
-        // filename:String,
-        // url:{
-            type:String,
-        //     default:"https://images.unsplash.com/photo-1560448204-e02f11c3d0e2",
-        //     set:function(v){
-        //         return v===""
-        //         ?"https://images.unsplash.com/photo-1560448204-e02f11c3d0e2"
-        //         :v;
-        //     }
-        // }
+            url:String,
+            filename:String
     },
     price:{
         type:Number,
