@@ -13,16 +13,15 @@ const listingSchema=new Schema({
     image:{
         // type:String,
         // filename:String,
-        url:{
+        // url:{
             type:String,
-            default:"https://images.unsplash.com/photo-1560448204-e02f11c3d0e2",
-            set:function(v){
-                return v === "" || v === null || v === undefined
-                ?"https://images.unsplash.com/photo-1560448204-e02f11c3d0e2"
-                :v;
-            }
-        }
-    
+        //     default:"https://images.unsplash.com/photo-1560448204-e02f11c3d0e2",
+        //     set:function(v){
+        //         return v===""
+        //         ?"https://images.unsplash.com/photo-1560448204-e02f11c3d0e2"
+        //         :v;
+        //     }
+        // }
     },
     price:{
         type:Number,
@@ -41,8 +40,8 @@ const listingSchema=new Schema({
     ],
     owner:{
         type:Schema.Types.ObjectId,
-        ref:"User",
-    },
+        ref:"User"
+    }
 });
 
 // A Mongoose Middleware used to delete reviews of a listing,if the listing gets deleted
